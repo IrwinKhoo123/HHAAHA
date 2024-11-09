@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacked Simulation</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            color: #00FF00;
+            font-family: monospace;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .text {
+            font-size: 1.5em;
+            animation: flicker 1s infinite alternate;
+            margin-bottom: 20px;
+        }
+
+        .loading-container {
+            width: 80%;
+            max-width: 600px;
+            border: 2px solid #00FF00;
+            padding: 5px;
+            margin: 10px 0;
+        }
+
+        .loading-bar {
+            width: 0%;
+            height: 25px;
+            background-color: #00FF00;
+        }
+
+        .loading-text {
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+
+        .final-message {
+            font-size: 1.8em;
+            display: none;
+            animation: flicker 1s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="text">Oops... You've been "hacked"! 🕶️</div>
+    
+    <div class="loading-container">
+        <div class="loading-bar" id="loadingBar"></div>
+    </div>
+    <div class="loading-text" id="loadingText">Copying data to server... 0%</div>
+    
+    <div class="final-message" id="finalMessage">Message from Anonymous: We are around you.</div>
+
+    <script>
+        let progress = 0;
+        const loadingBar = document.getElementById("loadingBar");
+        const loadingText = document.getElementById("loadingText");
+        const finalMessage = document.getElementById("finalMessage");
+
+        // Array of messages to rotate through
+        const messages = [
+            "Copying data to server...",
+            "Copying photos from album...",
+            "Copying search history...",
+            "Copying contacts...",
+            "Copying messages..."
+        ];
+        let messageIndex = 0;
+
+        // Function to update loading progress and rotate messages
+        const interval = setInterval(() => {
+            if (progress >= 100) {
+                clearInterval(interval);
+                loadingText.style.display = "none";       // Hide loading text
+                loadingBar.style.display = "none";        // Hide loading bar
+                finalMessage.style.display = "block";     // Show final message
+            } else {
+                progress += 1; // Increase progress by 1% every interval
+                loadingBar.style.width = progress + "%";
+                loadingText.textContent = `${messages[messageIndex]} ${progress}%`;
+
+                // Change message every 20% of progress
+                if (progress % 20 === 0) {
+                    messageIndex = (messageIndex + 1) % messages.length;
+                }
+            }
+        }, 100); // Adjust interval for desired speed (100ms = 10 seconds total)
+    </script>
+</body>
+</html>
